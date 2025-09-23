@@ -29,6 +29,13 @@ jobs:
         run: |
           black --check .
 
+      - name: Check installed packages and versions
+        run: |
+          echo "--- Pytest Version ---"
+          pytest --version
+          echo "--- All Installed Packages ---"
+          pip list
+
       - name: Run tests with Pytest
         run: |
           pytest --no-tests-found-exit-code=0
