@@ -38,4 +38,4 @@ jobs:
 
       - name: Run tests with Pytest
         run: |
-          pytest --no-tests-found-exit-code=0
+          pytest
