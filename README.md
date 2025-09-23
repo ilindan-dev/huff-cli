@@ -41,4 +41,11 @@ The CLI has two main commands: `encode` and `decode`.
 ### Encode a file
 
 ```bash
-huff-cli encode [INPUT_FILE] [OUTPUT_FILE]
+huff-cli encode [INPUT_FILE] [OUTPUT_FILE] --print-tree
+```
+
+### Decode a file
+```bash
+huff-cli decode [INPUT_FILE] [OUTPUT_FILE] --print-tree
+```
+

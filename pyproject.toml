@@ -26,9 +26,13 @@ huff-cli = "huff_cli.cli:run"
 dev = [
     "pytest>=6.0",
     "black",
+    "pytest-asyncio",
 ]
 
 [build-system]
 
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
