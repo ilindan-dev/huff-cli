@@ -37,7 +37,7 @@ async def encode_workflow(args):
     await io_handler.write_compressed_file(args.output, (freq_map, byte_array))
 
     print("\nEncoding complete!")
-    original_size = len(text.encode('ascii'))
+    original_size = len(text.encode("ascii"))
     compressed_size = len(byte_array)
     print(f"Original size: {original_size} bytes")
     print(f"Compressed size: {compressed_size} bytes")
@@ -79,13 +79,17 @@ async def decode_workflow(args):
 async def main():
     """Main function to parse arguments and call workflows."""
     parser = argparse.ArgumentParser(description="CLI for Huffman data compression.")
-    subparsers = parser.add_subparsers(dest="command", required=True, help="Available commands")
+    subparsers = parser.add_subparsers(
+        dest="command", required=True, help="Available commands"
+    )
 
     p_encode = subparsers.add_parser("encode", help="Encode a text file.")
     p_encode.add_argument("input", type=str, help="Input text file path.")
     p_encode.add_argument("output", type=str, help="Output compressed file path.")
     p_encode.add_argument(
-        "--print-tree", action="store_true", help="Print the Huffman tree to the screen."
+        "--print-tree",
+        action="store_true",
+        help="Print the Huffman tree to the screen.",
     )
     p_encode.set_defaults(func=encode_workflow)
 
@@ -93,7 +97,9 @@ async def main():
     p_decode.add_argument("input", type=str, help="Input compressed file path.")
     p_decode.add_argument("output", type=str, help="Output decoded text file path.")
     p_decode.add_argument(
-        "--print-tree", action="store_true", help="Print the reconstructed Huffman tree."
+        "--print-tree",
+        action="store_true",
+        help="Print the reconstructed Huffman tree.",
     )
     p_decode.set_defaults(func=decode_workflow)
 

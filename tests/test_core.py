@@ -6,6 +6,7 @@ from huff_cli.core import (
     generate_huffman_codes,
 )
 
+
 def test_generate_huffman_codes_standard_case():
     """
     It tests the generation of codes for the standard case with several characters.
@@ -18,6 +19,7 @@ def test_generate_huffman_codes_standard_case():
 
     assert actual_codes == expected_codes
 
+
 def test_generate_huffman_codes_single_character():
     """
     It tests the generation of codes for the standard case with several characters.
@@ -29,6 +31,7 @@ def test_generate_huffman_codes_single_character():
     actual_codes = generate_huffman_codes(huffman_tree)
 
     assert actual_codes == expected_codes
+
 
 def test_generate_huffman_codes_empty_text():
     """

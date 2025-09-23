@@ -13,22 +13,20 @@ async def test_encode_integration(tmp_path):
     """
     Tests that the encode workflow produces a file with the correct frequency map
     and that the data within can be successfully decoded back to the original text.
-     """
+    """
     # 1. Arrange
     input_file = tmp_path / "input.txt"
     output_file = tmp_path / "output.bin"
     original_text = "abracadabra"
 
-    input_file.write_text(original_text, encoding='ascii')
+    input_file.write_text(original_text, encoding="ascii")
 
     args = argparse.Namespace(
-        input=str(input_file),
-        output=str(output_file),
-        print_tree = False
+        input=str(input_file), output=str(output_file), print_tree=False
     )
 
-    golden_freq_map = {'a': 5, 'b': 2, 'r': 2, 'c': 1, 'd': 1}
-    golden_byte_array = bytearray(b'\x01J\xce\x94')
+    golden_freq_map = {"a": 5, "b": 2, "r": 2, "c": 1, "d": 1}
+    golden_byte_array = bytearray(b"\x01J\xce\x94")
 
     # 2. Act
     await cli.encode_workflow(args)
@@ -44,6 +42,7 @@ async def test_encode_integration(tmp_path):
     decoded_text = core.decode_text(byte_array, rebuilt_tree)
     assert decoded_text == original_text
 
+
 @pytest.mark.asyncio
 async def test_decode_reverses_encode(tmp_path):
     """
@@ -55,16 +54,16 @@ async def test_decode_reverses_encode(tmp_path):
     compressed_file = tmp_path / "output.bin"
     decoded_file = tmp_path / "decoded.txt"
     original_text = "full cycle test: encode then decode"
-    input_file.write_text(original_text, encoding='ascii')
+    input_file.write_text(original_text, encoding="ascii")
 
-    encode_args = argparse.Namespace(input=str(input_file),
-                                     output=str(compressed_file),
-                                     print_tree=False)
+    encode_args = argparse.Namespace(
+        input=str(input_file), output=str(compressed_file), print_tree=False
+    )
     await cli.encode_workflow(encode_args)
 
-    decode_args = argparse.Namespace(input=str(compressed_file),
-                                     output=str(decoded_file),
-                                     print_tree=False)
+    decode_args = argparse.Namespace(
+        input=str(compressed_file), output=str(decoded_file), print_tree=False
+    )
     await cli.decode_workflow(decode_args)
 
     assert os.path.exists(decoded_file)

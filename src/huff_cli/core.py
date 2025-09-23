@@ -4,6 +4,7 @@ from collections import Counter
 
 class HuffmanNode:
     """A class for representing a node in a Huffman tree."""
+
     def __init__(self, char, freq, left=None, right=None):
         self.char = char
         self.freq = freq
@@ -12,6 +13,7 @@ class HuffmanNode:
 
     def __lt__(self, other):
         return self.freq < other.freq
+
 
 def build_frequency_map(text: str) -> dict:
     """Builds a frequency map of the symbols"""
@@ -70,14 +72,14 @@ def pad_encoded_text(encoded_text: str) -> str:
 
     padded_info = f"{padding_amount:08b}"
 
-    padded_text = encoded_text + ('0' * padding_amount)
+    padded_text = encoded_text + ("0" * padding_amount)
 
     return padded_info + padded_text
 
 
 def text_to_byte_array(padded_text: str) -> bytearray:
     """Converts the augmented string from '0' and '1' into an array of bytes."""
-    b = bytearray(int(padded_text[i:i + 8], 2) for i in range(0, len(padded_text), 8))
+    b = bytearray(int(padded_text[i : i + 8], 2) for i in range(0, len(padded_text), 8))
     return b
 
 
@@ -103,8 +105,7 @@ def decode_text(encoded_bytes: bytearray, huffman_tree: HuffmanNode) -> str:
         return current_node.char * len(encoded_data)
 
     for bit in encoded_data:
-        current_node = current_node.left if bit == '0' else current_node.right
-
+        current_node = current_node.left if bit == "0" else current_node.right
 
         if current_node.char is not None:
             decoded_chars.append(current_node.char)
