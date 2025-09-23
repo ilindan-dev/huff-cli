@@ -24,7 +24,7 @@ huff-cli = "huff_cli.cli:run"
 
 [project.optional-dependencies]
 dev = [
-    "pytest",
+    "pytest>=6.0",
     "black",
 ]
 
