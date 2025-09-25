@@ -8,8 +8,7 @@ import os
 from huff_cli import cli, core
 
 
-@pytest.mark.asyncio
-async def test_encode_integration(tmp_path):
+def test_encode_integration(tmp_path):
     """
     Tests that the encode workflow produces a file with the correct frequency map
     and that the data within can be successfully decoded back to the original text.
@@ -29,7 +28,7 @@ async def test_encode_integration(tmp_path):
     golden_byte_array = bytearray(b"\x01J\xce\x94")
 
     # 2. Act
-    await cli.encode_workflow(args)
+    cli.encode_workflow(args)
 
     # 3. Assert
     assert os.path.exists(output_file)
@@ -43,8 +42,7 @@ async def test_encode_integration(tmp_path):
     assert decoded_text == original_text
 
 
-@pytest.mark.asyncio
-async def test_decode_reverses_encode(tmp_path):
+def test_decode_reverses_encode(tmp_path):
     """
     Full end-to-end test. Verifies that the `decode` command correctly
     reconstructs a file created by the `encode` command.
@@ -59,12 +57,12 @@ async def test_decode_reverses_encode(tmp_path):
     encode_args = argparse.Namespace(
         input=str(input_file), output=str(compressed_file), print_tree=False
     )
-    await cli.encode_workflow(encode_args)
+    cli.encode_workflow(encode_args)
 
     decode_args = argparse.Namespace(
         input=str(compressed_file), output=str(decoded_file), print_tree=False
     )
-    await cli.decode_workflow(decode_args)
+    cli.decode_workflow(decode_args)
 
     assert os.path.exists(decoded_file)
     assert filecmp.cmp(input_file, decoded_file, shallow=False)
