@@ -1,45 +1,34 @@
-import aiofiles
 import pickle
 from typing import Tuple, Optional
 
 
-async def read_text_file(path: str) -> Optional[str]:
-    """
-    Asynchronously reads an ASCII-encoded text file.
-    Returns the contents of the file, or None in case of an error.
-    """
+def read_text_file(path: str) -> Optional[str]:
+    # Reads a text file in ASCII encoding.
     try:
-        async with aiofiles.open(path, mode="r", encoding="ascii") as f:
-            return await f.read()
+        with open(path, mode="r", encoding="ascii", errors="ignore") as f:
+            return f.read()
     except FileNotFoundError:
         print(f"Error: File '{path}' not found.")
         return None
-    except UnicodeDecodeError:
-        print(f"Error: File '{path}' contains non-ASCII characters.")
+    except IOError as e:
+        print(f"Error reading from file '{path}': {e}")
         return None
 
 
-async def write_compressed_file(path: str, data: Tuple[dict, bytearray]):
-    """
-    Asynchronously writes compressed data to a binary file.
-    Uses pickle to serialize a tuple (frequency map, byte array).
-    """
+def write_compressed_file(path: str, data: Tuple[dict, bytearray]):
+    # Writes compressed data to a binary file.
     try:
-        async with aiofiles.open(path, mode="wb") as f:
-            await f.write(pickle.dumps(data))
+        with open(path, mode="wb") as f:
+            pickle.dump(data, f)
     except IOError as e:
         print(f"Error writing to file '{path}': {e}")
 
 
-async def read_compressed_file(path: str) -> Optional[Tuple[dict, bytearray]]:
-    """
-    Asynchronously reads a compressed binary file.
-    Uses pickle to deserialize data into a tuple.
-    """
+def read_compressed_file(path: str) -> Optional[Tuple[dict, bytearray]]:
+    # Reads a compressed binary file.
     try:
-        async with aiofiles.open(path, mode="rb") as f:
-            content = await f.read()
-            return pickle.loads(content)
+        with open(path, mode="rb") as f:
+            return pickle.load(f)
     except FileNotFoundError:
         print(f"Error: File '{path}' not found.")
         return None
@@ -51,12 +40,10 @@ async def read_compressed_file(path: str) -> Optional[Tuple[dict, bytearray]]:
         return None
 
 
-async def write_text_file(path: str, text: str):
-    """
-    Asynchronously writes plain text to a file.
-    """
+def write_text_file(path: str, text: str):
+    # Writes plain text to a file.
     try:
-        async with aiofiles.open(path, mode="w", encoding="ascii") as f:
-            await f.write(text)
+        with open(path, mode="w", encoding="ascii") as f:
+            f.write(text)
     except IOError as e:
         print(f"Error writing to file '{path}': {e}")

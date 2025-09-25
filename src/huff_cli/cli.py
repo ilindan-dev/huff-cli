@@ -1,21 +1,20 @@
 import argparse
-import asyncio
 
 from . import core
 from . import io_handler
 from . import utils
 
 
-async def encode_workflow(args):
+def encode_workflow(args):
     """Workflow for the encoding process."""
     print(f"Reading file: {args.input}")
-    text = await io_handler.read_text_file(args.input)
+    text = io_handler.read_text_file(args.input)
     if text is None:
         return
 
     if not text:
         print("File is empty. Creating an empty compressed file.")
-        await io_handler.write_compressed_file(args.output, ({}, bytearray()))
+        io_handler.write_compressed_file(args.output, ({}, bytearray()))
         return
 
     print("Building Huffman tree and generating codes...")
@@ -34,7 +33,7 @@ async def encode_workflow(args):
 
     byte_array = core.text_to_byte_array(padded_text)
 
-    await io_handler.write_compressed_file(args.output, (freq_map, byte_array))
+    io_handler.write_compressed_file(args.output, (freq_map, byte_array))
 
     print("\nEncoding complete!")
     original_size = len(text.encode("ascii"))
@@ -45,11 +44,11 @@ async def encode_workflow(args):
         print(f"Compression ratio: {original_size / compressed_size:.2f}x")
 
 
-async def decode_workflow(args):
+def decode_workflow(args):
     """Workflow for the decoding process."""
     print(f"Reading compressed file: {args.input}")
 
-    data_to_decode = await io_handler.read_compressed_file(args.input)
+    data_to_decode = io_handler.read_compressed_file(args.input)
     if data_to_decode is None:
         return
 
@@ -57,7 +56,7 @@ async def decode_workflow(args):
 
     if not freq_map:
         print("Compressed file is empty. Creating an empty output file.")
-        await io_handler.write_text_file(args.output, "")
+        io_handler.write_text_file(args.output, "")
         return
 
     print("Rebuilding Huffman tree and decoding data...")
@@ -71,12 +70,12 @@ async def decode_workflow(args):
 
     decoded_text = core.decode_text(byte_array, huffman_tree)
 
-    await io_handler.write_text_file(args.output, decoded_text)
+    io_handler.write_text_file(args.output, decoded_text)
 
     print(f"\nDecoding complete! Output saved to: {args.output}")
 
 
-async def main():
+def main():
     """Main function to parse arguments and call workflows."""
     parser = argparse.ArgumentParser(description="CLI for Huffman data compression.")
     subparsers = parser.add_subparsers(
@@ -104,12 +103,12 @@ async def main():
     p_decode.set_defaults(func=decode_workflow)
 
     args = parser.parse_args()
-    await args.func(args)
+    args.func(args)
 
 
 def run():
     """Entry point for the console script."""
     try:
-        asyncio.run(main())
+        main()
     except KeyboardInterrupt:
         print("\nOperation cancelled by user.")

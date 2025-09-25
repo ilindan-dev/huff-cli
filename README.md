@@ -8,18 +8,14 @@
 </p>
 
 
-A command-line tool for data compression...
-
 A command-line tool for data compression based on the Huffman algorithm.
 
-This project provides a CLI utility to encode (compress) and decode (decompress) text files using Huffman coding. It is optimized to handle large files by leveraging multiprocessing for CPU-bound tasks.
+This project provides a CLI utility to encode (compress) and decode (decompress) text files using Huffman coding.
 
 ## Features
 
 -   **Encode:** Compresses ASCII text files into a binary format.
 -   **Decode:** Decompresses files back to the original text.
--   **Performance:** Uses an adaptive strategy — a fast single-threaded approach for small files and a parallelized multi-process approach for large files (e.g., >1MB).
--   **Asynchronous I/O:** File operations are performed asynchronously to prevent blocking.
 
 ## Installation
 
